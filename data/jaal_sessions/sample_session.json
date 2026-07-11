@@ -1,0 +1,25 @@
+{
+  "session_id": "jaal_0007",
+  "label": "SIMULATION — pre-scripted for demo. Live scammer engagement is a roadmap item, never claim it is live.",
+  "trigger": "VPA fraudhelp@upi promoted to district blocklist by Nigrani (9+ independent reports)",
+  "persona": "Ramesh, 61, retired schoolteacher, eager but confused, keeps mishearing numbers",
+  "started_at": "2026-07-10T21:14:00+05:30",
+  "duration_minutes": 47,
+  "messages": [
+    {"from": "scammer", "text": "Sir congratulations, aapko KBC lucky draw me ₹50,000 mila hai. Processing fee ₹499 bhejo is UPI par: fraudhelp@upi"},
+    {"from": "jaal", "text": "Arre wah! Beta bahut khushi hui. Par ye UPI-VPI kya hota hai? Mera to bas bank passbook hai."},
+    {"from": "scammer", "text": "Sir koi baat nahi, aap PhonePe kholo. Nahi aata to hum dusra number dete hain, wahan Google Pay se bhejo: 98123-45670"},
+    {"from": "jaal", "text": "Ruko beta, chashma dhoondh raha hoon... 9-8-1-2... aage kya bola? Dhire bolo."},
+    {"from": "scammer", "text": "98123 45670 sir. Ya phir is QR ko scan karo, main bhejta hoon. Aur ye backup UPI bhi likh lo: kbcprize.claims@ptsbi"},
+    {"from": "jaal", "text": "Haan haan likh liya. Par beta pehle ye batao, fee 499 hai ya 4,999? Pension me se nikalna padega na."},
+    {"from": "scammer", "text": "Sirf 499 sir! Aaj hi bhejo warna prize cancel. Aur kisi ko batana mat, tax problem ho jayegi."},
+    {"from": "jaal", "text": "Achha achha. Ek baar phir se VPA bolo, main pote se type karwata hoon..."}
+  ],
+  "extracted_indicators": {
+    "vpas": ["fraudhelp@upi", "kbcprize.claims@ptsbi"],
+    "phones": ["+919812345670"],
+    "urls": [],
+    "kill_chain": ["prize_lure", "processing_fee", "deadline_pressure", "isolation"]
+  },
+  "outcome": "2 new indicators fed to Nigrani verification pipeline; 47 scammer-minutes wasted"
+}

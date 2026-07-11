@@ -1,0 +1,161 @@
+pack: core_v1
+version: 1
+description: >
+  Core ScamDSL pack — English / Hindi / Hinglish patterns tagged by kill-chain stage.
+  Weights are evidence contributions; the engine caps the rule-only total at 0.70.
+
+rules:
+  # ---- HOOK ------------------------------------------------------------
+  - id: prize_lure
+    stage: hook
+    weight: 0.30
+    patterns:
+      - '\b(congratulations?|badhai|बधाई)\b'
+      - '\b(won|winner|jeeta|जीता|jeet)\b.{0,50}(₹|rs|lakh|लाख|crore|करोड़|\d)'
+      - '\b(lottery|lucky\s*draw|inaam|इनाम|kbc)\b'
+    reason_en: "It promises a prize or lottery you never entered."
+    reason_hi: "यह ऐसे इनाम या लॉटरी का वादा करता है जिसमें आपने कभी हिस्सा ही नहीं लिया।"
+    reason_gu: "તે એવા ઇનામ કે લોટરીનું વચન આપે છે જેમાં તમે ક્યારેય ભાગ લીધો નથી."
+
+  - id: kyc_threat
+    stage: hook
+    weight: 0.30
+    patterns:
+      - '\bkyc\b.{0,50}(update|expire|verify|pending|block|suspend|band)'
+      - '(update|complete|verify)\w*.{0,20}\bkyc\b'
+      - 'केवाईसी'
+    reason_en: "Banks never ask for fees, OTPs, or app installs to update KYC."
+    reason_hi: "बैंक KYC अपडेट के लिए कभी फीस, OTP या ऐप इंस्टॉल नहीं मांगते।"
+    reason_gu: "બેંક KYC અપડેટ માટે ક્યારેય ફી, OTP કે એપ ઇન્સ્ટોલ માંગતી નથી."
+
+  - id: refund_bait
+    stage: hook
+    weight: 0.25
+    patterns:
+      - '\b(refund|cashback|कैशबैक|रिफंड)\b.{0,40}(claim|receive|milega|मिलेगा|accept|pin)'
+    reason_en: "Receiving money never needs a PIN or accepting a request — 'refunds' that do are theft."
+    reason_hi: "पैसे लेने के लिए कभी PIN नहीं डालना पड़ता — जो 'रिफंड' ऐसा कहे वह चोरी है।"
+
+  - id: subsidy_bait
+    stage: hook
+    weight: 0.20
+    patterns:
+      - '\b(subsidy|yojana|योजना|sarkari|सरकारी|pm[\s\-]?kisan)\b.{0,40}(register|fee|claim|₹|rs)'
+    reason_en: "Government schemes never require a fee to a private UPI ID."
+    reason_hi: "सरकारी योजना के लिए किसी निजी UPI पर फीस नहीं देनी होती।"
+
+  # ---- PRESSURE --------------------------------------------------------
+  - id: deadline_pressure
+    stage: pressure
+    weight: 0.20
+    patterns:
+      - '\b(today\s*only|aaj\s*hi|आज\s*ही|abhi|अभी|turant|तुरंत|immediately|urgent(ly)?|tonight|aaj\s*raat)\b'
+      - '\b(pay|bharo|भरो|bhejo|भेजो)\b.{0,30}\b(today|aaj|आज)\b'
+      - '\bwithin\s*\d+\s*(hours?|minutes?|ghante)\b'
+      - '\blast\s*(chance|warning)\b'
+      - '\b(warna|वरना|otherwise)\b.{0,30}(cancel|block|band|cut|case)'
+    reason_en: "It creates artificial urgency so you cannot stop and think."
+    reason_hi: "यह जानबूझकर जल्दबाज़ी पैदा करता है ताकि आप रुककर सोच न सकें।"
+    reason_gu: "તે ઇરાદાપૂર્વક ઉતાવળ ઊભી કરે છે જેથી તમે થોભીને વિચારી ન શકો."
+
+  - id: account_block_threat
+    stage: pressure
+    weight: 0.25
+    patterns:
+      - '\b(account|khata|खाता)\b.{0,40}(block|suspend|freeze|band|बंद)'
+      - '(band|बंद|block)\s*(ho\s*jayega|हो\s*जाएगा|kar\s*diya)'
+    reason_en: "It threatens your account will be blocked — a classic pressure tactic."
+    reason_hi: "यह खाता बंद होने की धमकी देता है — दबाव बनाने का पुराना तरीका।"
+
+  - id: police_threat
+    stage: pressure
+    weight: 0.30
+    patterns:
+      - '\b(digital\s*arrest|arrest|police|cbi|customs|narcotics|money\s*laundering|fir|court\s*case|गिरफ्तार|पुलिस)\b'
+    reason_en: "'Digital arrest' does not exist in Indian law. Police never demand money on a call."
+    reason_hi: "'डिजिटल अरेस्ट' भारतीय कानून में होता ही नहीं। पुलिस कॉल पर पैसे नहीं मांगती।"
+
+  - id: utility_disconnect_threat
+    stage: pressure
+    weight: 0.25
+    patterns:
+      - '\b(electricity|bijli|बिजली|light|connection)\b.{0,60}(cut|disconnect|band|बंद|kat|काट)'
+    reason_en: "Electricity boards send written notices; they never demand instant UPI payment."
+    reason_hi: "बिजली विभाग लिखित नोटिस भेजता है; तुरंत UPI पेमेंट कभी नहीं मांगता।"
+    reason_gu: "વીજળી બોર્ડ લેખિત નોટિસ મોકલે છે; તાત્કાલિક UPI ચુકવણી ક્યારેય માંગતું નથી."
+
+  - id: utility_bill_pending
+    stage: hook
+    weight: 0.15
+    patterns:
+      - '\b(electricity|bijli|बिजली)\b.{0,40}(bill|बिल)'
+      - '\b(bill|बिल)\b.{0,30}(pending|due|baki|बाकी|not\s*updated)'
+    reason_en: "Unsolicited 'pending bill' messages from unknown numbers are a common lure."
+    reason_hi: "अनजान नंबर से आया 'बिल बाकी है' संदेश ठगी का आम तरीका है।"
+
+  # ---- TRUST ABUSE -----------------------------------------------------
+  - id: impersonation_bank
+    stage: trust_abuse
+    weight: 0.20
+    patterns:
+      - '\b(bank\s*(officer|manager|se)|customer\s*care|rbi|sbi|hdfc|icici|axis\s*bank)\b'
+    reason_en: "It claims to be from your bank — banks contact you via registered channels only."
+    reason_hi: "यह बैंक के नाम से बात करता है — असली बैंक सिर्फ आधिकारिक माध्यम से संपर्क करता है।"
+
+  - id: impersonation_govt
+    stage: trust_abuse
+    weight: 0.20
+    patterns:
+      - '\b(income\s*tax|government|sarkar(i)?|trai|telecom\s*dept|courier|customs|post\s*office)\b.{0,40}(call|notice|case|parcel|payment)'
+    reason_en: "It impersonates a government agency to borrow authority."
+    reason_hi: "यह सरकारी संस्था बनकर रौब जमाता है।"
+
+  # ---- ACTION REQUEST --------------------------------------------------
+  - id: processing_fee
+    stage: action_request
+    weight: 0.30
+    patterns:
+      - '\b(processing|registration|handling|delivery|verification)\s*(fee|charge|shulk)\b'
+      - '\b(fee|shulk|शुल्क)\b.{0,30}(pay|bhejo|भेजो|send|bharo|भरो)'
+      - '(pay|bhejo|send)\b.{0,30}\b(fee|shulk|शुल्क)'
+    reason_en: "You are asked to pay a fee to receive money — real payouts never work this way."
+    reason_hi: "पैसे पाने के लिए पहले फीस मांगी जा रही है — असली इनाम में ऐसा कभी नहीं होता।"
+    reason_gu: "પૈસા મેળવવા માટે પહેલા ફી માંગવામાં આવે છે — સાચા ઇનામમાં આવું ક્યારેય થતું નથી."
+
+  - id: otp_request
+    stage: action_request
+    weight: 0.35
+    patterns:
+      - '\b(otp|one\s*time\s*password|pin|cvv)\b.{0,30}(share|send|bhejo|भेजो|batao|बताओ|bata)'
+      - '(share|batao|बताओ|send)\b.{0,20}\b(otp|pin|cvv)'
+    reason_en: "No bank, company, or officer ever needs your OTP or PIN. Sharing it hands over your account."
+    reason_hi: "कोई बैंक, कंपनी या अधिकारी OTP/PIN कभी नहीं मांगता। बताते ही खाता उनके हाथ में चला जाता है।"
+
+  - id: apk_install
+    stage: action_request
+    weight: 0.35
+    patterns:
+      - '\.apk\b'
+      - '\b(install|download)\b.{0,30}\b(app|apk)\b'
+      - '\b(anydesk|teamviewer|quick\s*support|screen\s*shar\w*)\b'
+    reason_en: "It asks you to install an app that can watch or control your phone."
+    reason_hi: "यह ऐसा ऐप इंस्टॉल करवाना चाहता है जो आपका फोन देख या चला सकता है।"
+
+  # ---- MONEY RAIL ------------------------------------------------------
+  - id: link_shortener
+    stage: money_rail
+    weight: 0.20
+    patterns:
+      - '\b(bit\.ly|tinyurl\.com|cutt\.ly|is\.gd|t\.co|rb\.gy)/\S+'
+    reason_en: "It hides the real website behind a shortened link."
+    reason_hi: "यह असली वेबसाइट को छोटे लिंक के पीछे छिपाता है।"
+
+  # ---- EVASION ---------------------------------------------------------
+  - id: isolation
+    stage: evasion
+    weight: 0.30
+    patterns:
+      - "\\b(don'?t\\s*tell|kisi\\s*ko\\s*(mat\\s*)?bata|किसी\\s*को\\s*मत\\s*बता|secret|गुप्त)"
+      - '\b(stay\s*on\s*(the\s*)?call|phone\s*(mat|na)\s*kato|call\s*disconnect\s*mat)\b'
+    reason_en: "It tells you to keep this secret — honest requests never need secrecy."
+    reason_hi: "यह किसी को न बताने को कहता है — सच्चे काम में छिपाने की ज़रूरत नहीं होती।"

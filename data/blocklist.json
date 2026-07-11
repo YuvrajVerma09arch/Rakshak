@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "generated_at": "2026-07-11T00:00:00+05:30",
+  "note": "Local reputation cache. Entries are promoted by Nigrani through the trust pipeline: personal -> village -> district -> global. Signed delta sync is a roadmap item.",
+  "vpas": {
+    "fraudhelp@upi": {
+      "level": "global",
+      "report_count": 23,
+      "first_reported": "2026-06-28",
+      "patterns": ["prize_lure", "processing_fee"],
+      "source": "community + jaal_extraction"
+    },
+    "kbc.winner99@ybl": {
+      "level": "district",
+      "report_count": 9,
+      "first_reported": "2026-07-02",
+      "patterns": ["prize_lure"],
+      "source": "community"
+    },
+    "quickrefund.support@axl": {
+      "level": "village",
+      "report_count": 3,
+      "first_reported": "2026-07-08",
+      "patterns": ["refund_bait", "otp_request"],
+      "source": "community"
+    }
+  },
+  "phones": {
+    "+919812345670": {
+      "level": "district",
+      "report_count": 11,
+      "first_reported": "2026-06-30",
+      "patterns": ["digital_arrest"],
+      "source": "community"
+    }
+  },
+  "urls": {
+    "bit.ly/kyc-updatee": {
+      "level": "global",
+      "report_count": 31,
+      "first_reported": "2026-06-20",
+      "patterns": ["kyc_threat", "apk_install"],
+      "source": "community + jaal_extraction"
+    }
+  }
+}
