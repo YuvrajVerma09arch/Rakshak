@@ -5,7 +5,9 @@ import JaalPanel from "./components/JaalPanel";
 type Tab = "firewall" | "jaal";
 
 export default function App() {
-  const [tab, setTab] = useState<Tab>("firewall");
+  const [tab, setTab] = useState<Tab>(() =>
+    new URLSearchParams(window.location.search).get("tab") === "jaal" ? "jaal" : "firewall",
+  );
 
   return (
     <>
